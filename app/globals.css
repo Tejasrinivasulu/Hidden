@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Space Grotesk", sans-serif;
+
+  --color-ink: var(--bg);
+  --color-paper: var(--text);
+  --color-amber: var(--primary);
+  --color-electric: var(--secondary);
+  --color-surface: var(--surface);
+  --color-surface2: var(--bg2);
+  --color-text-dim: var(--muted);
+
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+}
+
+:root {
+  /* Default Cyber theme */
+  --bg: #04060f;
+  --bg2: #080c1a;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(0, 255, 200, 0.18);
+  --primary: #00ffc8;
+  --secondary: #7b2fff;
+  --accent: #ff3c6e;
+  --text: #d0eee8;
+  --muted: #5a8070;
+  --glow: 0 0 40px rgba(0, 255, 200, 0.35), 0 0 80px rgba(0, 255, 200, 0.1);
+  --glow2: 0 0 40px rgba(123, 47, 255, 0.4);
+  --grad: linear-gradient(135deg, #00ffc8, #7b2fff);
+  --hero-overlay: linear-gradient(to bottom, rgba(4, 6, 15, 0.55) 0%, rgba(4, 6, 15, 0.8) 60%, rgba(4, 6, 15, 1) 100%);
+
+  /* ISTE Tech Club Resources Pages */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #0f0f1a;
+  --accent-blue: #00d4ff;
+  --accent-purple: #7c3aed;
+  --accent-pink: #f472b6;
+  --text-primary: #f0f0f0;
+  --text-muted: #6b7280;
+  --border-glow: rgba(124, 58, 237, 0.4);
+
+  /* GooeyNav Particle Colors */
+  --color-1: #00d4ff;
+  --color-2: #7c3aed;
+  --color-3: #f472b6;
+  --color-4: #00ffc8;
+}
+
+[data-theme="cyber"] {
+  --bg: #04060f;
+  --bg2: #080c1a;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(0, 255, 200, 0.18);
+  --primary: #00ffc8;
+  --secondary: #7b2fff;
+  --accent: #ff3c6e;
+  --text: #d0eee8;
+  --muted: #5a8070;
+  --glow: 0 0 40px rgba(0, 255, 200, 0.35), 0 0 80px rgba(0, 255, 200, 0.1);
+  --glow2: 0 0 40px rgba(123, 47, 255, 0.4);
+  --grad: linear-gradient(135deg, #00ffc8, #7b2fff);
+  --hero-overlay: linear-gradient(to bottom, rgba(4, 6, 15, 0.55) 0%, rgba(4, 6, 15, 0.8) 60%, rgba(4, 6, 15, 1) 100%);
+}
+
+[data-theme="solar"] {
+  --bg: #0d0800;
+  --bg2: #160f00;
+  --surface: rgba(255, 200, 50, 0.04);
+  --border: rgba(255, 160, 20, 0.2);
+  --primary: #ffb020;
+  --secondary: #ff4820;
+  --accent: #ffe040;
+  --text: #f5e8d0;
+  --muted: #806040;
+  --glow: 0 0 40px rgba(255, 176, 32, 0.4), 0 0 80px rgba(255, 176, 32, 0.1);
+  --glow2: 0 0 40px rgba(255, 72, 32, 0.4);
+  --grad: linear-gradient(135deg, #ffb020, #ff4820);
+  --hero-overlay: linear-gradient(to bottom, rgba(13, 8, 0, 0.5) 0%, rgba(13, 8, 0, 0.8) 60%, rgba(13, 8, 0, 1) 100%);
+}
+
+[data-theme="aurora"] {
+  --bg: #030810;
+  --bg2: #060d18;
+  --surface: rgba(100, 200, 255, 0.04);
+  --border: rgba(80, 160, 255, 0.2);
+  --primary: #40c8ff;
+  --secondary: #c040ff;
+  --accent: #40ffb0;
+  --text: #d0e8f8;
+  --muted: #4870a0;
+  --glow: 0 0 40px rgba(64, 200, 255, 0.4), 0 0 80px rgba(64, 200, 255, 0.1);
+  --glow2: 0 0 40px rgba(192, 64, 255, 0.4);
+  --grad: linear-gradient(135deg, #40c8ff, #c040ff);
+  --hero-overlay: linear-gradient(to bottom, rgba(3, 8, 16, 0.55) 0%, rgba(3, 8, 16, 0.8) 60%, rgba(3, 8, 16, 1) 100%);
+}
+
+[data-theme="crimson"] {
+  --bg: #0a0004;
+  --bg2: #140008;
+  --surface: rgba(255, 40, 80, 0.04);
+  --border: rgba(255, 40, 80, 0.2);
+  --primary: #ff2850;
+  --secondary: #ff8020;
+  --accent: #ffffff;
+  --text: #f0d0d8;
+  --muted: #804050;
+  --glow: 0 0 40px rgba(255, 40, 80, 0.4), 0 0 80px rgba(255, 40, 80, 0.1);
+  --glow2: 0 0 40px rgba(255, 128, 32, 0.4);
+  --grad: linear-gradient(135deg, #ff2850, #ff8020);
+  --hero-overlay: linear-gradient(to bottom, rgba(10, 0, 4, 0.55) 0%, rgba(10, 0, 4, 0.8) 60%, rgba(10, 0, 4, 1) 100%);
+}
+
+[data-theme="slate"] {
+  --bg: #121620;
+  --bg2: #182030;
+  --surface: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.1);
+  --primary: #a0aec0;
+  --secondary: #4a5568;
+  --accent: #ffffff;
+  --text: #e2e8f0;
+  --muted: #718096;
+  --glow: 0 0 40px rgba(160, 174, 192, 0.3);
+  --glow2: 0 0 40px rgba(74, 85, 104, 0.3);
+  --grad: linear-gradient(135deg, #a0aec0, #4a5568);
+  --hero-overlay: linear-gradient(to bottom, rgba(18, 22, 32, 0.55) 0%, rgba(18, 22, 32, 0.8) 60%, rgba(18, 22, 32, 1) 100%);
+}
+
+[data-theme="emerald"] {
+  --bg: #021a12;
+  --bg2: #032e20;
+  --surface: rgba(16, 185, 129, 0.04);
+  --border: rgba(16, 185, 129, 0.2);
+  --primary: #10b981;
+  --secondary: #047857;
+  --accent: #34d399;
+  --text: #d1fae5;
+  --muted: #065f46;
+  --glow: 0 0 40px rgba(16, 185, 129, 0.4), 0 0 80px rgba(16, 185, 129, 0.1);
+  --glow2: 0 0 40px rgba(4, 120, 87, 0.4);
+  --grad: linear-gradient(135deg, #10b981, #047857);
+  --hero-overlay: linear-gradient(to bottom, rgba(2, 26, 18, 0.55) 0%, rgba(2, 26, 18, 0.8) 60%, rgba(2, 26, 18, 1) 100%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-500;
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom premium visual utilities */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 70px 70px;
+  animation: gridMove 18s linear infinite;
+  opacity: 0.45;
+  transition: background-image 0.3s;
+}
+
+@keyframes gridMove {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 70px 70px, 70px 70px;
+  }
+}
+
+.hero-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px,
+      rgba(0, 0, 0, 0.15) 3px, rgba(0, 0, 0, 0.15) 4px);
+  animation: scanMove 8s linear infinite;
+}
+
+@keyframes scanMove {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 400px;
+  }
+}
