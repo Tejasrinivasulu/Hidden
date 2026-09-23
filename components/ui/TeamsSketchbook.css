@@ -1,0 +1,613 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   TeamsSketchbook — CSS
+   Ported 1:1 from ThreeUI meng-to-sketchbook.html canonical source.
+   Asset paths rewritten to /teams-sketchbook/.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:block;
+  src:url(/teams-sketchbook/instrument-serif.woff2) format('woff2')}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:block;
+  src:url(/teams-sketchbook/instrument-serif-italic.woff2) format('woff2')}
+@font-face{font-family:'Newsreader';font-style:normal;font-weight:200 600;font-display:swap;
+  src:url(/teams-sketchbook/newsreader.woff2) format('woff2')}
+
+.sb-root{
+  --paper:#ece7dc;
+  --ink:#2b2721;
+  --ink-soft:rgba(43,39,33,.58);
+  --ink-faint:rgba(43,39,33,.36);
+  --hairline:rgba(43,39,33,.14);
+  --earth:#9a6a3e;
+  --display:'Instrument Serif',"New York",Georgia,'Times New Roman',serif;
+  --font:'Newsreader',"New York",Georgia,'Times New Roman',serif;
+  --track-caps:.24em;
+  --track-nav:.06em;
+  position:relative;
+  font-family:var(--font);font-weight:400;background:var(--paper);color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.sb-root *{box-sizing:border-box}
+.sb-root a{color:inherit;text-decoration:none}
+.sb-root button{font:inherit}
+.sb-root ::selection{background:rgba(43,39,33,.85);color:var(--paper)}
+
+/* the painted ground the whole page sits on */
+.sb-root .wash{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:url(/teams-sketchbook/bg-wash.jpg) center top / cover no-repeat;
+  opacity:.85;
+}
+.sb-root .wash:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(236,231,220,.25) 0%,rgba(236,231,220,.72) 58%,var(--paper) 88%);
+}
+
+/* ---------------- teams header ---------------- */
+.sb-root .teams-header{
+  position:relative;z-index:20;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding-inline:clamp(16px,4vw,48px);
+  padding-block:clamp(36px, 5vh, 56px) clamp(16px, 2.5vh, 24px);
+  text-align:center;
+}
+.sb-root .teams-title{
+  font-family:var(--display);
+  font-size:clamp(44px, 5.6vw, 72px);
+  font-weight:400;
+  letter-spacing:.02em;
+  line-height:1.08;
+  color:var(--ink);
+  margin:0;
+  text-shadow:0 1px 3px rgba(43,39,33,.1);
+}
+.sb-root .hero-kicker{
+  font-size:clamp(11px, 1.1vw, 13px);
+  font-weight:500;
+  letter-spacing:var(--track-caps);
+  text-align:center;
+  color:var(--earth);
+  margin:0;
+  text-transform:uppercase;
+}
+.sb-root .title-accent{
+  width:min(120px, 26vw);
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--earth), transparent);
+  margin-top:6px;
+  opacity:.8;
+}
+
+/* ---------------- hero ---------------- */
+.sb-root .hero{
+  position:relative;display:grid;justify-items:center;align-content:center;
+  overflow-anchor:none;
+  padding:0 0 clamp(48px, 8svh, 80px);
+}
+.sb-root .botany{
+  position:absolute;bottom:0;width:clamp(120px,15vw,250px);opacity:.5;
+  pointer-events:none;user-select:none;z-index:0;
+}
+.sb-root .botany.l{left:clamp(-40px,-1vw,0px);bottom:2%}
+.sb-root .botany.r{right:clamp(-30px,0vw,10px);bottom:-2%;width:clamp(100px,12vw,200px)}
+@media (max-width:900px){.sb-root .botany{display:none}}
+
+/* ---------------- sketchbook ---------------- */
+.sb-root .hero,.sb-root .hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+.sb-root .hero img{-webkit-user-drag:none;user-drag:none}
+.sb-root .sb-wrap{display:grid;justify-items:center;gap:20px;width:100%;position:relative;z-index:2}
+.sb-root .sb-stage{
+  display:flex;align-items:center;justify-content:center;width:100%;
+  position:relative;
+  touch-action:pan-y;
+}
+.sb-root .sb-arrow{
+  flex:none;display:inline-flex;align-items:center;justify-content:center;padding:6px 2px;
+  border:0;background:transparent;color:var(--ink-faint);cursor:pointer;transition:color .2s;
+  -webkit-tap-highlight-color:transparent;z-index:8;
+}
+.sb-root .sb-arrow:hover{color:var(--ink)}
+
+.sb-root .sb-3d{
+  position:relative;flex:1 1;min-width:0;max-width:900px;
+  perspective:1750px;perspective-origin:50% 46%;
+}
+.sb-root .sb-tilt{
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--zoom,1));
+  will-change:transform;
+}
+.sb-root .sb-book{position:relative;width:100%;aspect-ratio:1760/1240;transform-style:preserve-3d;z-index:1}
+
+.sb-root .sb-cast{position:absolute;pointer-events:none;z-index:0}
+.sb-root .sb-cast.ambient{
+  left:5%;right:5%;top:27%;bottom:2%;
+  background:radial-gradient(50% 50% at 50% 58%,
+    rgba(58,44,26,.34) 0%,rgba(58,44,26,.19) 40%,rgba(58,44,26,0) 74%);
+  filter:blur(26px);
+  opacity:calc(1 - var(--shade,0) * .42);
+}
+.sb-root .sb-cast.contact{
+  left:9%;right:9%;top:62%;bottom:10%;
+  background:radial-gradient(50% 44% at 50% 42%,
+    rgba(44,32,14,.40) 0%,rgba(44,32,14,.17) 48%,rgba(44,32,14,0) 78%);
+  filter:blur(11px);
+  opacity:calc(1 - var(--shade,0) * .5);
+}
+.sb-root .sb-cast.hair{
+  left:12%;right:12%;top:70%;bottom:17%;
+  background:radial-gradient(50% 52% at 50% 40%,
+    rgba(40,28,10,.34) 0%,rgba(40,28,10,0) 76%);
+  filter:blur(4px);
+  opacity:calc(1 - var(--shade,0) * .62);
+}
+.sb-root .sb-full{position:absolute;inset:0}
+.sb-root .sb-full img{width:100%;height:auto;display:block}
+.sb-root .sb-half{position:absolute;top:0;bottom:0;width:50%;overflow-x:clip;overflow-y:visible}
+.sb-root .sb-half.left{left:0}
+.sb-root .sb-half.right{left:50%}
+.sb-root .sb-half-img{width:200%;max-width:none;height:auto;display:block}
+.sb-root .sb-half-img.right{margin-left:-100%}
+/* the shadow the lifting leaf throws onto the page beneath it */
+.sb-root .gutter-shade{
+  position:absolute;top:var(--pg,21.8%);bottom:var(--pg,21.8%);width:46%;
+  pointer-events:none;opacity:calc(var(--shade,0) * .62);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+}
+.sb-root .gutter-shade.left{right:0;background:linear-gradient(270deg,rgba(52,38,20,.30),rgba(52,38,20,0) 82%)}
+.sb-root .gutter-shade.right{left:0;background:linear-gradient(90deg,rgba(52,38,20,.24),rgba(52,38,20,0) 82%)}
+
+/* ---- the turning leaf: nested strips forming a curved surface ---- */
+.sb-root .curl{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span));
+  transform-style:preserve-3d;z-index:6;
+}
+.sb-root .curl.next{left:50%;transform-origin:left center;transform:rotateY(calc(-1 * var(--tt,0deg)))}
+.sb-root .curl.prev{right:50%;transform-origin:right center;transform:rotateY(var(--tt,0deg))}
+.sb-root .strip{
+  position:absolute;top:0;height:100%;
+  width:calc(var(--bw,0px) * var(--span) / var(--n));
+  transform-style:preserve-3d;
+}
+.sb-root .curl.next .strip{transform-origin:left center}
+.sb-root .curl.prev .strip{transform-origin:right center}
+.sb-root .curl.next>.strip{left:0}
+.sb-root .curl.prev>.strip{right:0;left:auto}
+.sb-root .curl.next .strip .strip{left:100%;transform:rotateY(var(--td,0deg))}
+.sb-root .curl.prev .strip .strip{right:100%;transform:rotateY(calc(-1 * var(--td,0deg)))}
+.sb-root .face{
+  position:absolute;top:0;bottom:0;left:0;right:-1.1px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background-repeat:no-repeat;background-size:var(--bw,0px) auto;
+}
+.sb-root .face.back{transform:rotateY(180deg)}
+.sb-root .face .sh,.sb-root .face .gl{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 5.2%,#000 94.8%,transparent 100%);
+}
+.sb-root .strip.edge .face .sh,.sb-root .strip.edge .face .gl{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%),var(--hf);
+  mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%),var(--hf);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+.sb-root .curl.next .strip.edge .face.front,.sb-root .curl.prev .strip.edge .face.back{
+  --hf:linear-gradient(90deg,#000 0 22%,transparent 96%);
+}
+.sb-root .curl.next .strip.edge .face.back,.sb-root .curl.prev .strip.edge .face.front{
+  --hf:linear-gradient(270deg,#000 0 22%,transparent 96%);
+}
+.sb-root .face .sh{position:absolute;left:0;right:0;top:var(--pg,21.8%);bottom:var(--pg,21.8%);pointer-events:none}
+.sb-root .curl.next .face.front .sh,.sb-root .curl.prev .face.back .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a1,0)),rgba(58,43,20,var(--a2,0)));
+}
+.sb-root .curl.next .face.back .sh,.sb-root .curl.prev .face.front .sh{
+  background:linear-gradient(90deg,rgba(58,43,20,var(--a2,0)),rgba(58,43,20,var(--a1,0)));
+}
+.sb-root .face .gl{
+  position:absolute;left:0;right:0;top:var(--pg,21.8%);bottom:var(--pg,21.8%);
+  pointer-events:none;background:#fffaf0;
+  opacity:calc(var(--shade,0) * var(--lit,1) * var(--lit,1) * .20);
+}
+
+/* ---- the loupe ---- */
+.sb-root .loupe{
+  position:absolute;left:0;top:0;
+  width:var(--lr,270px);height:var(--lr,270px);
+  pointer-events:none;z-index:80;opacity:0;
+  transition:opacity .25s ease;
+  will-change:transform;
+}
+.sb-root .loupe.on{opacity:1}
+.sb-root .loupe.held .ring{cursor:grabbing}
+.sb-root .loupe .ring{
+  position:absolute;inset:0;border-radius:50%;
+  pointer-events:auto;cursor:grab;
+  padding:calc(var(--lr,270px) * .058);
+  box-shadow:
+    0 1px 2px rgba(58,44,26,.30),
+    0 10px 18px rgba(58,44,26,.24),
+    0 26px 40px rgba(58,44,26,.20),
+    0 48px 66px rgba(58,44,26,.13);
+}
+.sb-root .loupe .ring:before{
+  content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:linear-gradient(146deg,
+    #fdf7e9 0%,#e6d7b4 14%,#b69d70 32%,#7d6740 50%,
+    #cdbb92 66%,#f4ead3 80%,#9b8459 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.8),
+    inset 0 -2px 3px rgba(70,52,26,.5);
+  -webkit-mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0 88.2%,#000 89.8% 100%);
+  mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0 88.2%,#000 89.8% 100%);
+}
+.sb-root .loupe .grip{
+  position:absolute;left:50%;top:50%;
+  width:calc(var(--lr,270px) * .74);height:calc(var(--lr,270px) * .125);
+  transform-origin:0 50%;
+  transform:rotate(40deg) translate(calc(var(--lr,270px) * .33),-50%);
+  border-radius:calc(var(--lr,270px) * .06);
+  pointer-events:auto;cursor:grab;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.46) 0 13%,rgba(255,255,255,0) 44%,
+                    rgba(0,0,0,.26) 100%),
+    linear-gradient(90deg,#d9bd82 0 14%,#a9884e 14% 20%,#6d4c2b 20% 62%,
+                    #5a3d22 62% 92%,#7a563180 92% 100%);
+  box-shadow:0 8px 15px rgba(58,44,26,.26),0 18px 26px rgba(58,44,26,.14);
+}
+.sb-root .lens{
+  position:relative;display:block;width:100%;height:100%;border-radius:50%;
+  background-repeat:no-repeat;overflow:hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(52,40,22,.55),
+    inset 0 4px 12px rgba(40,30,14,.28),
+    inset 0 -7px 16px rgba(255,250,240,.14);
+}
+.sb-root .lens .mag{display:none}
+.sb-root .zoomwrap{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2;
+  opacity:0;
+}
+.sb-root .zoominner{position:absolute;inset:0;transform-origin:0 0}
+.sb-root .lens:before,.sb-root .lens:after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none}
+.sb-root .lens:before{z-index:1}
+.sb-root .lens:after{z-index:2}
+.sb-root .lens:before{
+  background:radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,0) 54%,rgba(58,44,26,.10) 76%,rgba(46,34,16,.34) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(130,162,196,.26),
+    inset 0 0 0 4px rgba(206,158,112,.15);
+}
+.sb-root .lens:after{
+  background:
+    radial-gradient(36% 26% at 29% 19%,rgba(255,255,255,.30),rgba(255,255,255,0) 76%),
+    radial-gradient(24% 16% at 74% 86%,rgba(255,255,255,.12),rgba(255,255,255,0) 80%),
+    linear-gradient(150deg,rgba(255,255,255,.06) 0 18%,rgba(255,255,255,0) 42%);
+}
+
+/* ---- controls ---- */
+.sb-root .sb-tools{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:5px 7px;background:rgba(250,246,238,.62);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.sb-root .tool{
+  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  border:0;border-radius:50%;background:transparent;color:var(--ink-soft);
+  cursor:pointer;transition:background-color .18s ease,color .18s ease;
+}
+.sb-root .tool:hover{background:rgba(255,252,244,.9);color:var(--ink)}
+.sb-root .tool[aria-pressed="true"]{background:rgba(154,106,62,.16);color:var(--earth)}
+.sb-root .tool:disabled{opacity:.32;cursor:default;background:transparent}
+.sb-root .tool svg{width:15px;height:15px;display:block}
+.sb-root .tool-sep{width:1px;height:17px;background:var(--hairline);margin:0 2px}
+.sb-root .zoom-read{
+  font-size:11px;letter-spacing:.1em;color:var(--ink-faint);
+  min-width:40px;text-align:center;font-variant-numeric:tabular-nums;
+}
+@media (pointer:coarse){.sb-root .loupe{display:none}}
+
+.sb-root .sb-zone{position:absolute;top:0;bottom:0;border:0;background:transparent;cursor:grab;z-index:60;-webkit-tap-highlight-color:transparent}
+.sb-root .sb-zone:active{cursor:grabbing}
+.sb-root .sb-prev{left:0;width:50%}
+.sb-root .sb-next{right:0;width:50%}
+
+.sb-root .sb-captions{display:grid;justify-items:center}
+.sb-root .sb-captions>*{grid-area:1/1;margin:0}
+.sb-root .sb-caption{font-size:13px;letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink-soft);
+  animation:sb-cap-in .5s ease both}
+.sb-root .sb-caption.live{animation:none}
+@keyframes sb-cap-in{0%{opacity:0}}
+@keyframes sb-cap-out{to{opacity:0}}
+.sb-root .sb-hint{
+  margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  transition:opacity .4s ease;
+}
+.sb-root .sb-hint.gone{opacity:0}
+.sb-root .sb-wrap.intro .sb-full img,.sb-root .sb-wrap.intro .sb-half-img{filter:url(#sb-mblur-1)}
+.sb-root .sb-wrap.intro.b2 .sb-full img,.sb-root .sb-wrap.intro.b2 .sb-half-img{filter:url(#sb-mblur-2)}
+.sb-root .sb-wrap.intro .sb-caption{animation:none}
+.sb-root .sb-wrap.intro .sb-caption.cap-out{display:none}
+@media (max-width:640px){
+  .sb-root .hero-kicker{font-size:10.5px;letter-spacing:.16em}
+  .sb-root .sb-wrap{width:100vw;margin-inline:calc(50% - 50vw)}
+  .sb-root .sb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:70;padding:12px 6px}
+  .sb-root .sb-arrow.left{left:2px}
+  .sb-root .sb-arrow.right{right:2px}
+  .sb-root .sb-3d{max-width:none}
+  .sb-root .sb-hint{font-size:9.5px;letter-spacing:.1em;padding:0 16px;text-align:center}
+}
+
+/* ---------------- in-book right page journal overlay ---------------- */
+.sb-root .sb-journal-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 25;
+  box-sizing: border-box;
+  padding: 4% 4.5% 3.5% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  opacity: 1;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.sb-root.turning .sb-journal-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ──── THE STICKY NOTE: realistic canary yellow Post-it stuck onto the page ──── */
+.sb-root .jo-page {
+  width: 93%;
+  height: 92%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  box-sizing: border-box;
+  padding: 5% 5.5% 4% 5.5%;
+
+  /* Iconic canary yellow sticky note paper */
+  background:
+    linear-gradient(
+      172deg,
+      #fffca6 0%,
+      #fff474 14%,
+      #fde64c 65%,
+      #f7dc3b 100%
+    );
+
+  /* Sticky note shadow: flat at glued top, lifting and casting soft deep shadow at bottom */
+  box-shadow:
+    0 1px 3px rgba(50, 40, 10, 0.14),
+    0 5px 12px rgba(50, 40, 10, 0.12),
+    0 12px 24px -2px rgba(50, 40, 10, 0.18),
+    0 22px 38px -6px rgba(50, 40, 10, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  /* Effortless hand-placed tilt */
+  transform: rotate(-0.8deg);
+
+  /* Crisp paper edges */
+  border: 1px solid rgba(205, 170, 30, 0.45);
+  border-top-color: rgba(220, 185, 35, 0.3);
+  border-bottom-color: rgba(185, 145, 20, 0.55);
+  border-radius: 1px 2px 3px 2px;
+}
+
+/* ── Adhesive strip across the top of the sticky note ── */
+.sb-root .jo-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(22px, 2.6vw, 36px);
+  background: linear-gradient(
+    180deg,
+    rgba(215, 175, 15, 0.24) 0%,
+    rgba(215, 175, 15, 0.10) 80%,
+    transparent 100%
+  );
+  border-bottom: 1px dashed rgba(175, 135, 10, 0.22);
+  border-radius: 1px 2px 0 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Realistic peeled/curled corner shadow at bottom-right ── */
+.sb-root .jo-page::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 8px;
+  width: 55%;
+  height: 24px;
+  background: transparent;
+  box-shadow: 0 16px 20px rgba(45, 35, 10, 0.32);
+  transform: rotate(2.4deg) skewX(2deg);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---- content area ---- */
+.sb-root .jo-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+
+/* ---- footer ---- */
+.sb-root .jo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 2.5%;
+  border-top: 1.5px solid rgba(70, 50, 15, 0.22);
+}
+
+.sb-root .jo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.8%;
+}
+.sb-root .jo-plate-stamp {
+  font-family: monospace;
+  font-size: clamp(9px, 1vw, 13px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #482e10;
+  border: 1.5px solid rgba(80, 50, 15, 0.38);
+  padding: clamp(2px, 0.25vw, 4px) clamp(7px, 0.8vw, 12px);
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 2px;
+  text-shadow: 0 0 0 transparent;
+}
+.sb-root .jo-dept-mark {
+  font-family: var(--font);
+  font-size: clamp(8px, 0.8vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(75, 52, 20, 0.65);
+  font-weight: 500;
+}
+
+/* ---- decorative rule ---- */
+.sb-root .jo-rule {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(60, 42, 18, 0.35), rgba(60, 42, 18, 0.08) 75%, transparent);
+  margin-bottom: 2.2%;
+}
+
+/* ---- title ---- */
+.sb-root .jo-title {
+  font-family: var(--display);
+  font-size: clamp(24px, 3.4vw, 48px);
+  line-height: 1.06;
+  color: #1a1714;
+  margin: 0 0 0.4%;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(43,39,33,0.06);
+}
+
+/* ---- tagline: FIX #9 — removed opacity, darkened color ---- */
+.sb-root .jo-tagline {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(12.5px, 1.4vw, 18px);
+  color: #4a3520;
+  margin: 0 0 3.2%;
+  line-height: 1.35;
+}
+
+/* ---- entry blocks: FIX #6 — more breathing room ---- */
+.sb-root .jo-entry {
+  margin-bottom: 3.5%;
+}
+/* ---- entry labels: FIX #5 — darker, bolder, with text-shadow ---- */
+.sb-root .jo-entry-label {
+  display: block;
+  font-family: var(--font);
+  font-size: clamp(9.5px, 0.9vw, 12px);
+  letter-spacing: 0.16em;
+  color: #3b2810;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 1%;
+  text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.6);
+}
+/* ---- description text: FIX #3 — 6 lines instead of 4 ---- */
+.sb-root .jo-entry-text {
+  font-family: var(--font);
+  font-size: clamp(12.5px, 1.3vw, 17px);
+  line-height: 1.56;
+  color: #23201b;
+  margin: 0;
+  font-weight: 400;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- ledger lists: FIX #1 & #8 — proper gaps between items ---- */
+.sb-root .jo-ledger {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(4px, 0.5vw, 8px) clamp(14px, 2vw, 24px);
+}
+.sb-root .jo-ledger-item {
+  font-family: var(--font);
+  font-size: clamp(11.5px, 1.15vw, 15px);
+  color: #23201b;
+  line-height: 1.55;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.sb-root .jo-ledger-item.tool {
+  color: #4a3520;
+  font-weight: 500;
+  font-style: italic;
+}
+.sb-root .jo-bullet {
+  color: rgba(92, 58, 20, 0.65);
+  font-weight: 700;
+  margin-right: 3px;
+  font-size: 1.1em;
+}
+
+
+
+/* ---- explore link: FIX #7 — more presence ---- */
+.sb-root .jo-explore {
+  pointer-events: auto;
+  display: inline-block;
+  font-family: var(--font);
+  font-size: clamp(11px, 1.1vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #3d2e18;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(61, 46, 24, 0.4);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.sb-root .jo-explore:hover {
+  color: #1a1714;
+  border-bottom-color: #1a1714;
+}
+
+/* ---- stamp text: FIX #2 — simple inline text, no oversized circle ---- */
+.sb-root .jo-stamp-text {
+  font-family: monospace;
+  font-size: clamp(8px, 0.75vw, 10.5px);
+  letter-spacing: 0.16em;
+  color: rgba(140, 88, 40, 0.55);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.sb-root .foot{
+  font-size:11.5px;letter-spacing:var(--track-caps);text-transform:uppercase;
+  color:var(--ink-faint);text-align:center;padding:16px 16px 48px;
+}
