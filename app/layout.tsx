@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/shared/Navbar";
-import CursorManager from "@/components/shared/CursorManager";
 import { AdminProvider } from "@/context/AdminContext";
 import "./globals.css";
 
@@ -26,7 +25,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-[#04060f] text-[#d0eee8] selection:bg-amber/30">
         <AdminProvider>
-          <CursorManager />
           <Navbar />
           <main className="flex-grow">
             {children}
