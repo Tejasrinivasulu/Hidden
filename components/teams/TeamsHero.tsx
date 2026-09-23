@@ -1,12 +1,34 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SpotlightCard from "@/components/ui/SpotlightCard";
 import dynamic from 'next/dynamic';
 
-const Ferrofluid = dynamic(() => import('@/components/ui/Ferrofluid'), {
-  ssr: false,
-});
+interface FerrofluidProps {
+  className?: string;
+  dpr?: number;
+  paused?: boolean;
+  colors?: string[];
+  speed?: number;
+  scale?: number;
+  turbulence?: number;
+  fluidity?: number;
+  rimWidth?: number;
+  sharpness?: number;
+  shimmer?: number;
+  glow?: number;
+  flowDirection?: string;
+  opacity?: number;
+  mouseInteraction?: boolean;
+  mouseStrength?: number;
+  mouseRadius?: number;
+  mouseDampening?: number;
+  mixBlendMode?: string;
+}
+
+const Ferrofluid = dynamic<FerrofluidProps>(
+  () => import('@/components/ui/Ferrofluid') as unknown as Promise<React.ComponentType<FerrofluidProps>>,
+  { ssr: false }
+);
 
 export default function TeamsHero() {
   const scrollTo = (id: string) => {
@@ -33,9 +55,6 @@ export default function TeamsHero() {
           mouseInteraction={true}
           mouseStrength={1}
           mouseRadius={0.3}
-          color1="#c724b2"
-          color2="#c41919ff"
-          color3="#21cdc7ff"
         />
       </div>
 
