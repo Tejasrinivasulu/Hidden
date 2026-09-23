@@ -83,7 +83,7 @@ export default function GalleryPage() {
                 borderRadius={0.05} 
                 scrollEase={0.05} 
                 font="bold 40px Orbitron"
-                onClick={(text) => {
+                onClick={(text: string) => {
                   const slug = text.toLowerCase().replace(/\s+/g, '-');
                   router.push(`/gallery/events/${slug}`);
                 }}
