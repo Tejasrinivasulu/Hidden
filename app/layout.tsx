@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/shared/Navbar";
+import CursorManager from "@/components/shared/CursorManager";
 import { AdminProvider } from "@/context/AdminContext";
 import "./globals.css";
 
@@ -19,12 +20,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@600&family=Space+Grotesk:wght@400;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@600&family=Space+Grotesk:wght@400;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#04060f] text-[#d0eee8] selection:bg-amber/30">
+      <body className="min-h-full flex flex-col text-[var(--text)] selection:bg-primary/25">
         <AdminProvider>
+          <CursorManager />
           <Navbar />
           <main className="flex-grow">
             {children}

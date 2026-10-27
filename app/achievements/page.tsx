@@ -8,7 +8,12 @@ import CountUp from "react-countup";
 import { Search, Trophy, Award, Rocket, FileBadge, Target, Users, BookOpen, Presentation, ChevronRight, Briefcase } from "lucide-react";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import LogoLoop from "@/components/ui/LogoLoop";
-import { achievementsData, statisticsData } from "@/lib/data/achievements";
+import {
+  achievementsData,
+  statisticsData,
+  type Achievement,
+} from "@/lib/data/achievements";
+import { useAdmin } from "@/context/AdminContext";
 
 // Badges mapping
 const categoryIcons: Record<string, React.ElementType> = {
@@ -27,15 +32,33 @@ const categories = ["All", "Award", "Hackathon", "Competition", "Research", "Pro
 const years = ["All Years", "2026", "2025", "2024", "2023"];
 
 export default function AchievementsPage() {
+  const { achievements: adminAchievements } = useAdmin();
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [activeYear, setActiveYear] = useState<string>("All Years");
   const [searchQuery, setSearchQuery] = useState("");
 
   const { ref: statsRef, inView: statsInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const allAchievements = useMemo<Achievement[]>(() => {
+    const fromAdmin: Achievement[] = adminAchievements.map((a) => ({
+      id: String(a.id),
+      slug: a.slug,
+      title: a.title,
+      category: a.category as Achievement["category"],
+      date: a.date,
+      year: a.year,
+      description: a.description,
+      featured: a.featured,
+      images: a.image ? [a.image] : [],
+      teamMembers: a.teamMembers,
+      teamName: a.teamName,
+    }));
+    return [...fromAdmin, ...achievementsData];
+  }, [adminAchievements]);
+
   // Filter logic
   const filteredAchievements = useMemo(() => {
-    return achievementsData.filter(ach => {
+    return allAchievements.filter(ach => {
       const matchesCategory = activeCategory === "All" || ach.category === activeCategory;
       const matchesYear = activeYear === "All Years" || ach.year === activeYear;
       const searchLower = searchQuery.toLowerCase();
@@ -44,22 +67,23 @@ export default function AchievementsPage() {
                             ach.teamName.toLowerCase().includes(searchLower);
       return matchesCategory && matchesYear && matchesSearch;
     });
-  }, [activeCategory, activeYear, searchQuery]);
+  }, [allAchievements, activeCategory, activeYear, searchQuery]);
 
-  const featuredAchievement = achievementsData.find(a => a.featured) || achievementsData[0];
+  const featuredAchievement =
+    allAchievements.find((a) => a.featured) || allAchievements[0];
 
   // Extract all images for the scrolling background
   const backgroundImages = useMemo(() => {
-    return achievementsData
+    return allAchievements
       .flatMap(ach => ach.images)
       .map(src => ({ src }));
-  }, []);
+  }, [allAchievements]);
 
   return (
-    <div className="bg-[#04060f] text-white overflow-hidden font-inter">
+    <div className="bg-[#050a18] text-white overflow-hidden font-inter">
       
       {/* 1. Hero Section */}
-      <section className="relative min-h-[90vh] pt-32 pb-20 flex flex-col justify-center bg-[#04060f]">
+      <section className="relative min-h-[90vh] pt-32 pb-20 flex flex-col justify-center bg-[#050a18]">
         {/* Hero Background Elements */}
         <div className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[rgba(124,58,237,0.15)] blur-[120px]"></div>
@@ -93,7 +117,7 @@ export default function AchievementsPage() {
           </div>
           
           {/* Gradient fade out at the bottom of the hero background */}
-          <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-[#04060f] to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-[#050a18] to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-[5vw] relative z-10 flex flex-col items-center justify-center flex-grow text-center mt-10">
@@ -189,7 +213,7 @@ export default function AchievementsPage() {
       )}
 
       {/* 3. Achievement Cards Grid & Filters */}
-      <section className="w-full py-32 bg-[#04060f]">
+      <section className="w-full py-32 bg-[#050a18]">
         <div className="container mx-auto px-[5vw]">
           
           <div className="text-center mb-16">
@@ -208,7 +232,7 @@ export default function AchievementsPage() {
                 placeholder="Search achievements..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#04060f] border border-white/10 rounded-full py-4 pl-12 pr-6 text-white font-inter focus:outline-none focus:border-[rgba(124,58,237,0.5)] focus:ring-1 focus:ring-[rgba(124,58,237,0.5)] transition-all shadow-inner"
+                className="w-full bg-[#050a18] border border-white/10 rounded-full py-4 pl-12 pr-6 text-white font-inter focus:outline-none focus:border-[rgba(124,58,237,0.5)] focus:ring-1 focus:ring-[rgba(124,58,237,0.5)] transition-all shadow-inner"
               />
             </div>
 
@@ -223,7 +247,7 @@ export default function AchievementsPage() {
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-inter text-sm font-medium transition-all duration-300 ${
                         activeCategory === cat 
                         ? "bg-gradient-to-r from-[rgba(124,58,237,0.8)] to-[rgba(0,212,255,0.8)] text-white shadow-[0_0_15px_rgba(124,58,237,0.4)] border border-transparent" 
-                        : "bg-[#04060f] text-gray-400 border border-white/10 hover:border-white/30 hover:text-white"
+                        : "bg-[#050a18] text-gray-400 border border-white/10 hover:border-white/30 hover:text-white"
                       }`}
                     >
                       <Icon size={16} />

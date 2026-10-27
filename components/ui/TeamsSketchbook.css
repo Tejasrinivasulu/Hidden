@@ -12,42 +12,47 @@
   src:url(/teams-sketchbook/newsreader.woff2) format('woff2')}
 
 .sb-root{
-  --paper:#ece7dc;
-  --ink:#2b2721;
-  --ink-soft:rgba(43,39,33,.58);
-  --ink-faint:rgba(43,39,33,.36);
-  --hairline:rgba(43,39,33,.14);
-  --earth:#9a6a3e;
+  --paper:#f4f7fb;
+  --section-bg:var(--bg, #f3f7fc);
+  --ink:#152238;
+  --ink-soft:rgba(21,34,56,.58);
+  --ink-faint:rgba(21,34,56,.36);
+  --hairline:rgba(21,34,56,.14);
+  --earth:#1e4fd6;
   --display:'Instrument Serif',"New York",Georgia,'Times New Roman',serif;
   --font:'Newsreader',"New York",Georgia,'Times New Roman',serif;
   --track-caps:.24em;
   --track-nav:.06em;
   position:relative;
-  font-family:var(--font);font-weight:400;background:var(--paper);color:var(--ink);
+  font-family:var(--font);font-weight:400;background:var(--section-bg);color:var(--ink);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 .sb-root *{box-sizing:border-box}
 .sb-root a{color:inherit;text-decoration:none}
 .sb-root button{font:inherit}
-.sb-root ::selection{background:rgba(43,39,33,.85);color:var(--paper)}
+.sb-root ::selection{background:rgba(26,143,212,.22);color:var(--ink)}
 
-/* the painted ground the whole page sits on */
+/* Soft light wash — matches landing page */
 .sb-root .wash{
   position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:url(/teams-sketchbook/bg-wash.jpg) center top / cover no-repeat;
-  opacity:.85;
+  background:
+    radial-gradient(ellipse 85% 55% at 50% 0%, rgba(120,170,255,0.14), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 100% 70%, rgba(140,180,255,0.1), transparent 50%),
+    linear-gradient(180deg, #f8fafd 0%, var(--section-bg) 100%);
+  opacity:1;
 }
 .sb-root .wash:after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(236,231,220,.25) 0%,rgba(236,231,220,.72) 58%,var(--paper) 88%);
+  background:linear-gradient(180deg, transparent 0%, rgba(245,248,252,.4) 80%, var(--section-bg) 100%);
 }
 
 /* ---------------- teams header ---------------- */
 .sb-root .teams-header{
   position:relative;z-index:20;
-  display:flex;flex-direction:column;align-items:center;gap:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  width:100%;
   padding-inline:clamp(16px,4vw,48px);
-  padding-block:clamp(36px, 5vh, 56px) clamp(16px, 2.5vh, 24px);
+  padding-block:clamp(40px, 6vh, 64px) clamp(12px, 2vh, 20px);
   text-align:center;
 }
 .sb-root .teams-title{
@@ -58,7 +63,8 @@
   line-height:1.08;
   color:var(--ink);
   margin:0;
-  text-shadow:0 1px 3px rgba(43,39,33,.1);
+  text-align:center;
+  text-shadow:0 1px 2px rgba(26,39,64,.06);
 }
 .sb-root .hero-kicker{
   font-size:clamp(11px, 1.1vw, 13px);
@@ -74,7 +80,8 @@
   height:2px;
   background:linear-gradient(90deg, transparent, var(--earth), transparent);
   margin-top:6px;
-  opacity:.8;
+  opacity:.85;
+  transform-origin:center;
 }
 
 /* ---------------- hero ---------------- */
@@ -94,7 +101,7 @@
 /* ---------------- sketchbook ---------------- */
 .sb-root .hero,.sb-root .hero *{-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .sb-root .hero img{-webkit-user-drag:none;user-drag:none}
-.sb-root .sb-wrap{display:grid;justify-items:center;gap:20px;width:100%;position:relative;z-index:2}
+.sb-root .sb-wrap{display:grid;justify-items:center;gap:20px;width:100%;position:relative;z-index:2;margin-top:-64px}
 .sb-root .sb-stage{
   display:flex;align-items:center;justify-content:center;width:100%;
   position:relative;

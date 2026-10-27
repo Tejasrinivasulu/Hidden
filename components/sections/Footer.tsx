@@ -2,22 +2,25 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
+import { useAdmin } from "@/context/AdminContext";
 
 export default function Footer() {
+  const { profile } = useAdmin();
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
     { name: "Team", href: "/#teams" },
     { name: "Achievements", href: "/achievements" },
     { name: "Gallery", href: "/gallery" },
-    { name: "Contact Us", href: "/#footer" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
   const socials = [
     {
       title: "Instagram",
-      href: "https://www.instagram.com/istechamps_mbu/?hl=en",
+      href: profile.instagram || "https://www.instagram.com/istechamps_mbu/?hl=en",
       brandColor: "#E1306C",
       brandShadow: "rgba(225,48,108,0.4)",
       icon: (
@@ -28,7 +31,7 @@ export default function Footer() {
     },
     {
       title: "LinkedIn",
-      href: "https://www.linkedin.com/company/iste-svec-mbu/",
+      href: profile.linkedin || "https://www.linkedin.com/company/iste-svec-mbu/",
       brandColor: "#0A66C2",
       brandShadow: "rgba(10,102,194,0.4)",
       icon: (
@@ -50,7 +53,9 @@ export default function Footer() {
     },
     {
       title: "WhatsApp",
-      href: "https://chat.whatsapp.com/YOUR_GROUP_INVITE_LINK",
+      href:
+        profile.whatsappCommunityLink ||
+        "https://chat.whatsapp.com/KZNAUM1o7Qw0skVB5LA88T",
       brandColor: "#25D366",
       brandShadow: "rgba(37,211,102,0.4)",
       icon: (
@@ -77,7 +82,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer id="footer" className="bg-[#04060f] border-t border-white/10 pt-12 pb-0 px-[5vw] relative overflow-hidden font-inter">
+    <footer id="footer" className="bg-[var(--bg)] border-t border-[var(--border)] pt-12 pb-0 px-[5vw] relative overflow-hidden font-inter">
 
       <div className="max-w-7xl mx-auto relative z-10">
 
@@ -88,22 +93,22 @@ export default function Footer() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-300 font-inter text-sm md:text-base font-medium transition-all duration-300 hover:text-[rgba(0,212,255,1)] hover:drop-shadow-[0_0_8px_rgba(0,212,255,0.5)] relative group"
+                className="text-[var(--muted)] font-inter text-sm md:text-base font-medium transition-all duration-300 hover:text-primary relative group"
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-[rgba(0,212,255,1)] to-[rgba(124,58,237,1)] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full">
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--muted)] bg-white/70 border border-[var(--border)] px-3.5 py-1.5 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>ISTE MBU &amp; SVEC CHAPTER</span>
           </div>
         </div>
 
         {/* Gradient Divider */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"></div>
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent"></div>
       </div>
 
       {/* 2. Giant Typography Section with Overlaid Content */}
@@ -121,7 +126,7 @@ export default function Footer() {
         >
           {/* Base dim layer */}
           <div
-            className="text-[22vw] md:text-[20vw] font-extrabold uppercase leading-[0.85] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-b from-white/[0.07] to-transparent whitespace-nowrap text-center"
+            className="text-[22vw] md:text-[20vw] font-extrabold uppercase leading-[0.85] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-b from-[var(--text)]/[0.08] to-transparent whitespace-nowrap text-center"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
             ISTE
@@ -129,7 +134,7 @@ export default function Footer() {
 
           {/* Vibrant gradient layer — revealed by spotlight mask */}
           <div
-            className="absolute inset-0 text-[22vw] md:text-[20vw] font-extrabold uppercase leading-[0.85] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] via-[#a8d8ea] to-[#c4b5fd] whitespace-nowrap text-center transition-opacity duration-500"
+            className="absolute inset-0 text-[22vw] md:text-[20vw] font-extrabold uppercase leading-[0.85] tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#3b6ef0] to-secondary whitespace-nowrap text-center transition-opacity duration-500"
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
               WebkitMaskImage: `radial-gradient(circle 200px at ${mousePos.x}% ${mousePos.y}%, black 0%, transparent 100%)`,
@@ -179,49 +184,47 @@ export default function Footer() {
                     className="h-10 md:h-12 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(124,58,237,0.15)]" 
                   />
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-400 font-inter">
-                  <MapPin className="w-3.5 h-3.5 text-[rgba(0,212,255,0.8)] shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-[var(--muted)] font-inter">
+                  <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
                   <span>Sri Sainath Nagar, Tirupati, AP</span>
                 </div>
               </div>
 
-              {/* Center: Contact Pills */}
-              <div className="flex flex-wrap items-center gap-3">
-                <a 
-                  href="mailto:wtistembu@gmail.com" 
-                  className="flex items-center gap-2 text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-3.5 py-2 rounded-full hover:border-[rgba(0,212,255,0.4)] hover:text-gray-200 transition-all duration-300"
-                >
-                  <Mail className="w-3.5 h-3.5" /> wtistembu@gmail.com
-                </a>
-                <a 
-                  href="tel:9985687570" 
-                  className="flex items-center gap-2 text-xs font-mono text-gray-400 bg-white/5 border border-white/10 px-3.5 py-2 rounded-full hover:border-[rgba(0,212,255,0.4)] hover:text-gray-200 transition-all duration-300"
-                >
-                  <Phone className="w-3.5 h-3.5" /> +91 9985687570
-                </a>
-              </div>
-
-              {/* Right: Floating Social Dock */}
-              <div className="flex items-center gap-2.5">
-                {socials.map((social) => (
+              {/* Right: Contact above socials */}
+              <div className="flex flex-col items-start md:items-end gap-3">
+                <div className="flex flex-col items-start md:items-end gap-2.5">
                   <a
-                    key={social.title}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={social.title}
-                    onMouseEnter={() => setHoveredSocial(social.title)}
-                    onMouseLeave={() => setHoveredSocial(null)}
-                    className="w-10 h-10 rounded-xl bg-white/[0.05] backdrop-blur-sm border flex items-center justify-center transition-all duration-300 hover:-translate-y-1.5"
-                    style={{
-                      color: hoveredSocial === social.title ? social.brandColor : '#9ca3af',
-                      borderColor: hoveredSocial === social.title ? social.brandColor : 'rgba(255,255,255,0.1)',
-                      boxShadow: hoveredSocial === social.title ? `0 8px 20px ${social.brandShadow}` : 'none',
-                    }}
+                    href="mailto:wtistembu@gmail.com"
+                    className="flex items-center gap-2 text-xs font-mono text-[var(--muted)] bg-white/80 border border-[var(--border)] px-3.5 py-2 rounded-full hover:border-primary/50 hover:text-[var(--text)] transition-all duration-300"
                   >
-                    {social.icon}
+                    <Mail className="w-3.5 h-3.5" /> wtistembu@gmail.com
                   </a>
-                ))}
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {socials.map((social) => (
+                    <a
+                      key={social.title}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={social.title}
+                      onMouseEnter={() => setHoveredSocial(social.title)}
+                      onMouseLeave={() => setHoveredSocial(null)}
+                      className="w-10 h-10 rounded-xl bg-white/80 backdrop-blur-sm border flex items-center justify-center transition-all duration-300 hover:-translate-y-1.5"
+                      style={{
+                        color: hoveredSocial === social.title ? social.brandColor : "var(--muted)",
+                        borderColor:
+                          hoveredSocial === social.title ? social.brandColor : "var(--border)",
+                        boxShadow:
+                          hoveredSocial === social.title
+                            ? `0 8px 20px ${social.brandShadow}`
+                            : "none",
+                      }}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
 
             </div>
@@ -230,8 +233,8 @@ export default function Footer() {
       </div>
 
       {/* 3. Minimal Bottom Copyright Strip */}
-      <div className="max-w-7xl mx-auto relative z-10 border-t border-white/5 py-5 px-[5vw]">
-        <div className="font-mono text-[0.6rem] tracking-[2px] text-white/15 uppercase text-center">
+      <div className="max-w-7xl mx-auto relative z-10 border-t border-[var(--border)] py-5 px-[5vw]">
+        <div className="font-mono text-[0.6rem] tracking-[2px] text-[var(--muted)]/50 uppercase text-center">
           © {new Date().getFullYear()} ISTE MBU &amp; SVEC — ALL RIGHTS RESERVED
         </div>
       </div>

@@ -78,7 +78,7 @@ export default function TechnicalSupportPage() {
             animated={true} 
             edgeSensitivity={50} 
             className="w-full"
-            colors={['#00d4ff', '#7c3aed', '#f472b6']}
+            colors={['#00d4ff', '#4aa3ff', '#7ef0ff']}
           >
             <div className="p-8">
               {isSubmitted ? (

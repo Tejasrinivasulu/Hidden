@@ -38,7 +38,7 @@ export default function GalleryPage() {
       <div className="absolute inset-0 z-0">
         <LightRays
           raysOrigin="top-center"
-          raysColor="#7c3aed"
+          raysColor="#4aa3ff"
           raysSpeed={0.8}
           lightSpread={1.2}
           rayLength={1.5}
@@ -83,7 +83,7 @@ export default function GalleryPage() {
                 borderRadius={0.05} 
                 scrollEase={0.05} 
                 font="bold 40px Orbitron"
-                onClick={(text: string) => {
+                onClick={(text) => {
                   const slug = text.toLowerCase().replace(/\s+/g, '-');
                   router.push(`/gallery/events/${slug}`);
                 }}
@@ -100,7 +100,7 @@ export default function GalleryPage() {
             >
               <DomeGallery 
                 images={cGallery} 
-                overlayBlurColor="#0a0a0f"
+                overlayBlurColor="#050a18"
                 grayscale={false}
               />
             </motion.div>
